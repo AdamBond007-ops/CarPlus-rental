@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+        window.FontAwesomeConfig = {
+          autoReplaceSvg: 'nest'
+        };
+      </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - CarPlus</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        black: '#000000',
+                        white: '#FFFFFF',
+                        accent: '#00FF66', // Neon green accent
+                        'accent-hover': '#00CC52',
+                        'dark-surface': 'rgba(0, 0, 0, 0.65)',
+                        'border-subtle': 'rgba(255, 255, 255, 0.15)',
+                        'text-muted': '#A0A0A0'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    boxShadow: {
+                        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        ::-webkit-scrollbar { display: none; }
+        
+        /* Glassmorphism utilities */
+        .glass-panel {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .input-field {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: #00FF66;
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 1px rgba(0, 255, 102, 0.3);
+        }
+        
+        .custom-checkbox {
+            appearance: none;
+            background-color: rgba(255, 255, 255, 0.1);
+            margin: 0;
+            font: inherit;
+            color: currentColor;
+            width: 1.15em;
+            height: 1.15em;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 0.25em;
+            display: grid;
+            place-content: center;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+        }
+
+        .custom-checkbox::before {
+            content: "";
+            width: 0.65em;
+            height: 0.65em;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            box-shadow: inset 1em 1em white;
+            background-color: black;
+            transform-origin: center;
+            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+        }
+
+        .custom-checkbox:checked {
+            background-color: #00FF66;
+            border-color: #00FF66;
+        }
+
+        .custom-checkbox:checked::before {
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body class="bg-black text-white min-h-screen flex items-center justify-center relative overflow-hidden" id="auth-page">
+
+    <!-- Background Image -->
+    <div class="absolute inset-0 z-0">
+        <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/90 z-10"></div>
+        <img src="https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=2115&auto=format&fit=crop" 
+             alt="Futuristic luxury car interior" 
+             class="w-full h-full object-cover" />
+    </div>
+
+    <!-- Main Auth Container -->
+    <main class="relative z-20 w-full max-w-[1440px] px-6 py-12 flex flex-col md:flex-row items-center justify-center gap-12 lg:gap-24 min-h-screen" id="main-content">
+        
+        <!-- Left Side: Branding (Visible on larger screens) -->
+        <div class="hidden md:flex flex-col w-full max-w-lg" id="brand-section">
+            <div class="mb-8">
+                <h1 class="text-5xl lg:text-7xl font-serif font-semibold tracking-tight text-white mb-4">CarPlus</h1>
+                <div class="w-16 h-1 bg-accent rounded-full mb-6"></div>
+                <p class="text-2xl lg:text-3xl font-light leading-snug text-gray-200">
+                    Drive Your Journey<br>
+                    <span class="text-accent font-medium">with CarPlus.</span>
+                </p>
+            </div>
+            <p class="text-text-muted text-lg font-light max-w-md">
+                Experience the future of mobility. Access premium vehicles with seamless digital keys and personalized comfort settings.
+            </p>
+        </div>
+
+        <!-- Right Side: Auth Card -->
+        <div class="w-full max-w-[480px]" id="auth-card-container">
+            <div class="glass-panel rounded-[24px] p-8 md:p-10 shadow-glass w-full">
+                
+                <!-- Mobile Logo (Hidden on desktop) -->
+                <div class="md:hidden text-center mb-8">
+                    <h1 class="text-4xl font-serif font-semibold text-white mb-2">CarPlus</h1>
+                    <p class="text-accent text-sm tracking-wide uppercase font-medium">Drive Your Journey</p>
+                </div>
+
+                <!-- Form Header -->
+                <div class="mb-10 text-center md:text-left">
+                    <h2 class="text-2xl md:text-3xl font-semibold mb-2 text-white">Welcome back</h2>
+                    <p class="text-text-muted text-sm md:text-base">Please enter your details to sign in.</p>
+
+                    <div
+                    id="errorMessage"
+
+                    class="
+                    text-red-500
+                    text-sm
+                    mt-2">
+
+                    </div>
+                </div>
+
+                <!-- Login Form -->
+                <form id="login-form" action="login.php" method="POST" class="space-y-6">
+                    
+                    <!-- Email Field -->
+                    <div class="space-y-2">
+                        <label for="email" class="block text-sm font-medium text-gray-300 ml-1">Email address</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i class="fa-regular fa-envelope text-gray-400"></i>
+                            </div>
+                            <input type="email" id="email" name="email" 
+                                class="input-field w-full rounded-[14px] py-3.5 pl-11 pr-4 text-sm placeholder-gray-500 block" 
+                                placeholder="name@example.com" required>
+                        </div>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between ml-1">
+                            <label for="password" class="block text-sm font-medium text-gray-300">Password</label>
+                            <a href="forgot-password.html" class="text-xs font-medium text-accent hover:text-accent-hover transition-colors">Forgot password?</a>
+                        </div>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i class="fa-solid fa-lock text-gray-400"></i>
+                            </div>
+                            <input type="password" id="password" name="password" 
+                                class="input-field w-full rounded-[14px] py-3.5 pl-11 pr-10 text-sm placeholder-gray-500 block" 
+                                placeholder="••••••••" required>
+                            <button
+                                type="button"
+
+                                id="togglePassword"
+
+                                class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-white transition-colors">
+
+                                <i
+                                id="eyeIcon"
+
+                                class="fa-regular fa-eye">
+
+                                </i>
+
+                                </button>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="w-full flex justify-center items-center py-4 px-4 border border-transparent rounded-[14px] shadow-sm text-sm font-semibold text-black bg-accent hover:bg-accent-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent focus:ring-offset-black transition-all mt-8 group">
+                        Log In
+                        <i class="fa-solid fa-arrow-right ml-2 opacity-70 group-hover:opacity-100 group-hover:translate-x-1 transition-all"></i>
+                    </button>
+                </form>
+
+                <!-- Sign Up Link -->
+                <p class="mt-10 text-center text-sm text-gray-400">
+                    Don't have an account? 
+                    <a href="signup.html" class="font-semibold text-white hover:text-accent transition-colors ml-1 border-b border-transparent hover:border-accent pb-0.5">Sign up</a>
+                </p>
+                
+            </div>
+            
+            <!-- Footer Links -->
+            <div class="mt-8 flex justify-center space-x-6 text-xs text-text-muted">
+                <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                <a href="#" class="hover:text-white transition-colors">Help Center</a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+
+const toggle =
+document.getElementById(
+'togglePassword'
+);
+
+const password =
+document.getElementById(
+'password'
+);
+
+const eye =
+document.getElementById(
+'eyeIcon'
+);
+
+toggle.addEventListener(
+'click',
+
+()=>{
+
+if(
+password.type
+===
+'password'
+){
+
+password.type =
+'text';
+
+eye.classList.remove(
+'fa-eye'
+);
+
+eye.classList.add(
+'fa-eye-slash'
+);
+
+}
+else{
+
+password.type =
+'password';
+
+eye.classList.remove(
+'fa-eye-slash'
+);
+
+eye.classList.add(
+'fa-eye'
+);
+
+}
+
+}
+
+);
+
+const params =
+new URLSearchParams(
+window.location.search
+);
+
+const error =
+params.get(
+'error'
+);
+
+const message =
+document.getElementById(
+'errorMessage'
+);
+
+if(error === 'wrongpassword')  { message.innerText = 'Incorrect password. Please try again.'; }
+if(error === 'emailnotfound') { message.innerText = 'No account found with that email.'; }
+
+</script>
+
+</body>
+</html>
